@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votação de Vídeos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .video-box {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .results {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+
+    .winner {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Vote no Melhor Vídeo 🎬</h1>
+
+  <div class="container">
+
+    <div class="video-box">
+      <h3>Vídeo 1</h3>
+      <video controls>
+        <source src="video1.mp4" type="video/mp4">
+      </video>
+      <button onclick="vote(1)">Votar</button>
+    </div>
+
+    <div class="video-box">
+      <h3>Vídeo 2</h3>
+      <video controls>
+        <source src="video2.mp4" type="video/mp4">
+      </video>
+      <button onclick="vote(2)">Votar</button>
+    </div>
+
+  </div>
+
+  <div class="results">
+    <p>Resultados:</p>
+    <p>Vídeo 1: <span id="v1">0</span> votos</p>
+    <p>Vídeo 2: <span id="v2">0</span> votos</p>
+  </div>
+
+  <div class="winner" id="winner"></div>
+
+  <script>
+    // Carrega votos salvos
+    let votes1 = localStorage.getItem('votes1') ? parseInt(localStorage.getItem('votes1')) : 0;
+    let votes2 = localStorage.getItem('votes2') ? parseInt(localStorage.getItem('votes2')) : 0;
+
+    document.getElementById('v1').innerText = votes1;
+    document.getElementById('v2').innerText = votes2;
+
+    function vote(video) {
+      if (localStorage.getItem('voted')) {
+        alert('Você já votou!');
+        return;
+      }
+
+      if (video === 1) {
+        votes1++;
+        localStorage.setItem('votes1', votes1);
+      } else {
+        votes2++;
+        localStorage.setItem('votes2', votes2);
+      }
+
+      localStorage.setItem('voted', true);
+      updateResults();
+    }
+
+    function updateResults() {
+      document.getElementById('v1').innerText = votes1;
+      document.getElementById('v2').innerText = votes2;
+
+      let winnerText = '';
+      if (votes1 > votes2) {
+        winnerText = '🏆 Vídeo 1 está ganhando!';
+      } else if (votes2 > votes1) {
+        winnerText = '🏆 Vídeo 2 está ganhando!';
+      } else {
+        winnerText = '🤝 Empate!';
+      }
+
+      document.getElementById('winner').innerText = winnerText;
+    }
+
+    updateResults();
+  </script>
+
+</body>
+</html>
